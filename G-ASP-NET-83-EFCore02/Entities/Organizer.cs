@@ -21,6 +21,8 @@ namespace G_ASP_NET_83_EFCore02.Entities
         [MaxLength(100)]
         public string? CompanyName { get; set; }
 
+        public OrganizerProfile Profile { get; set; }
+        public ICollection<Event> Events { get; set; }
         public bool IsVerified { get; set; }
     }
 }

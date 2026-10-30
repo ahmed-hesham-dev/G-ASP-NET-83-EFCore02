@@ -1,35 +1,54 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using G_ASP_NET_83_EFCore02.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace G_ASP_NET_83_EFCore02.Context
 {
-    public class AppDbContext : DbContext               
+    public class AppDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlServer(
-            "Server=localhost\\MSSQLSERVERR;Database=EventHub;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
-       
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {  
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<OrganizerProfile>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+            });
 
-        public DbSet<Entities.Badge> Badges { get; set; }
+            modelBuilder.Entity<Organizer>()
+                .HasOne(o => o.Profile)
+                .WithOne(p => p.Organizer)
+                .HasForeignKey<OrganizerProfile>(p => p.OrganizerId);
 
-        public DbSet<Entities.Organizer> Organizers { get; set; }
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(AppDbContext).Assembly
+            );
+        }
 
-        public DbSet<Entities.OrganizerProfile> OrganizerProfiles { get; set; }
+        protected override void OnConfiguring(
+            DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(
+                    "Server=localhost\\MSSQLSERVERR;Database=EventHub;Trusted_Connection=True;TrustServerCertificate=True;"
+                );
+            }
+        }
 
-        public DbSet<Entities.Event> Events { get; set; }
+        #region DbSet Properties
 
-        public DbSet<Entities.Attendee> Attendees { get; set; }
+        public DbSet<Badge> Badges { get; set; }
+        public DbSet<Organizer> Organizers { get; set; }
+        public DbSet<OrganizerProfile> OrganizerProfiles { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Attendee> Attendees { get; set; }
+
+        #endregion
     }
 }

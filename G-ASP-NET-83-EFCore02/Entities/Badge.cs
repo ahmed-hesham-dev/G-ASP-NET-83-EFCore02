@@ -16,5 +16,7 @@ namespace G_ASP_NET_83_EFCore02.Entities
         public DateTime IssuedDate { get; set; }
 
         public BadgeTier Tier { get; set; }
+        public int AttendeeId { get; set; }
+        public Attendee Attendee { get; set; }
     }
 }

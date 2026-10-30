@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace G_ASP_NET_83_EFCore02.Entities
 {
 
-    [Table("EventOrganizers")]
 
     public class OrganizerProfile
     {
@@ -24,5 +23,12 @@ namespace G_ASP_NET_83_EFCore02.Entities
         {
             get; set;
         }
-        }
+
+
+
+
+        public int OrganizerId { get; set; }
+
+        public Organizer Organizer { get; set; }
+    }
 }

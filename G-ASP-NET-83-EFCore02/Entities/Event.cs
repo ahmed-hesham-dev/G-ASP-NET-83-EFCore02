@@ -19,5 +19,9 @@ namespace G_ASP_NET_83_EFCore02.Entities
         public DateTime? EndDate { get; set; }
 
         public int MaxAttendees { get; set; }
+
+        public int OrganizerId { get; set; }
+
+        public Organizer Organizer { get; set; }
     }
 }
